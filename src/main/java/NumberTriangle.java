@@ -104,8 +104,15 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
+        NumberTriangle cur = this;
+        for(int i = 0; i < path.length();i++){
+            if(path.charAt(i)=='r'){
+                cur = cur.right;
+            }else if(path.charAt(i)=='l'){
+                cur = cur.left;
+            }
+        }
+        return cur.getRoot();
     }
 
     /** Read in the NumberTriangle structure from a file.
@@ -146,7 +153,6 @@ public class NumberTriangle {
             }
 
             rows.add(row);
-            // TODO process the line
 
 
             //read the next line
