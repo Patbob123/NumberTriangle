@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -64,6 +65,21 @@ public class NumberTriangle {
      */
     public void maxSumPath() {
         // for fun [not for credit]:
+        if(this.left == null && this.right == null){
+            return;
+        }
+
+        if(this.left != null){
+            this.left.maxSumPath();
+        }
+
+        if(this.right != null){
+            this.right.maxSumPath();
+        }
+
+        root = root + Math.max(this.left == null ? 0 : this.left.getRoot() , this.right == null ? 0 : this.right.getRoot());
+        this.left = null;
+        this.right = null;
     }
 
 
@@ -110,7 +126,7 @@ public class NumberTriangle {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
 
-        // TODO define any variables that you want to use to store things
+        ArrayList<NumberTriangle[]> rows = new ArrayList<NumberTriangle[]>();
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -122,11 +138,32 @@ public class NumberTriangle {
             // remove when done; this line is included so running starter code prints the contents of the file
             System.out.println(line);
 
+            String[] lineContents = line.split(" ");
+            NumberTriangle[] row = new NumberTriangle[lineContents.length];
+
+            for(int i = 0; i < lineContents.length; i++){
+                row[i] = new NumberTriangle(Integer.parseInt(lineContents[i]));
+            }
+
+            rows.add(row);
             // TODO process the line
+
 
             //read the next line
             line = br.readLine();
         }
+
+        for(int i = 0; i < rows.size()-1; i++){
+            NumberTriangle[] curRow = rows.get(i);
+            NumberTriangle[] nextRow = rows.get(i+1);
+            for(int j = 0; j < curRow.length; j++){
+                curRow[j].setLeft(nextRow[j]);
+                curRow[j].setRight(nextRow[j+1]);
+            }
+        }
+
+        top = rows.get(0)[0];
+
         br.close();
         return top;
     }
